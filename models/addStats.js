@@ -1,24 +1,39 @@
 const moment = require("moment");
 const db = require("../config/db.js");
 
-exports.create = function(userId, account, done) {
+exports.create = function(userId, account, gameId) {
   return new Promise((resolve, reject) => {
     const unixTimestamp = moment().unix();
-    const values = [userId, account, unixTimestamp];
+    const values = [userId, account, gameId, "GET", unixTimestamp];
     db
       .get()
       .query(
-        "INSERT INTO add_stats (userId, account, timestamp) VALUES(?, ?, ?)",
+        "INSERT INTO add_stats (userId, account, gameId, action, timestamp) VALUES(?, ?, ?, ?, ?)",
         values,
         function(err, result) {
           if (err) return reject(err);
-          resolve(userId);
+          resolve(result);
         }
       );
   });
 };
 
-exports.getAll = function(done) {
+exports.updateAddById = function(action, id, gameId) {
+  return new Promise((resolve, reject) => {
+    db
+      .get()
+      .query(
+        `UPDATE add_stats SET action = ${action} WHERE gameId = '${gameId}'`,
+        values,
+        function(err, result) {
+          if (err) return reject(err);
+          resolve(result);
+        }
+      );
+  });
+};
+
+exports.getAll = function() {
   return new Promise((resolve, reject) => {
     db.get().query("SELECT * FROM add_stats", function(err, rows) {
       if (err) return reject(err);
@@ -27,7 +42,7 @@ exports.getAll = function(done) {
   });
 };
 
-exports.getAllByUser = function(userId, done) {
+exports.getAllByUser = function(userId) {
   return new Promise((resolve, reject) => {
     db
       .get()

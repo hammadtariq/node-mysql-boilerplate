@@ -1,5 +1,6 @@
 const mysql = require("mysql"),
-  async = require("async");
+  async = require("async"),
+  config = require("../bin/config");
 const env = config.env();
 
 const PRODUCTION_DB = "adds_provider",
