@@ -1,7 +1,7 @@
 const moment = require("moment");
 const db = require("../config/db.js");
 
-exports.create = function(userId, account, gameId) {
+exports.create = function(userId, gameId, account) {
   return new Promise((resolve, reject) => {
     const unixTimestamp = moment().unix();
     const values = [userId, account, gameId, "GET", unixTimestamp];
@@ -18,13 +18,12 @@ exports.create = function(userId, account, gameId) {
   });
 };
 
-exports.updateAddById = function(action, id, gameId) {
+exports.updateAddById = function(action, userId, gameId) {
   return new Promise((resolve, reject) => {
     db
       .get()
       .query(
-        `UPDATE add_stats SET action = ${action} WHERE gameId = '${gameId}'`,
-        values,
+        `UPDATE add_stats SET action = '${action}' WHERE gameId = '${gameId}'`,
         function(err, result) {
           if (err) return reject(err);
           resolve(result);
