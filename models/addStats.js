@@ -1,10 +1,10 @@
 const moment = require("moment");
 const db = require("../config/db.js");
 
-exports.create = function(userId, gameId, account) {
+exports.create = function(userId, gameId, account, action) {
   return new Promise((resolve, reject) => {
     const unixTimestamp = moment().unix();
-    const values = [userId, account, gameId, "GET", unixTimestamp];
+    const values = [userId, account, gameId, action, unixTimestamp];
     db
       .get()
       .query(
