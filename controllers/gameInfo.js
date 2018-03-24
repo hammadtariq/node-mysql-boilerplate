@@ -1,7 +1,29 @@
 const gameModel = require("../models/gameInfo");
 const uuidV1 = require("uuid/v1");
+const path = require("path");
+const fs = require("fs");
+
 const config = require("../bin/config");
 const env = config.env();
+
+function imagesScanner(gameId) {
+  const relativePath = path.relative(process.cwd(), "./public/images");
+  const files = fs.readdirSync(relativePath);
+  let myImg = null;
+  console.log("files", files);
+  for (const file of files) {
+    const imageName = file.split(".");
+    if (gameId == imageName[0]) {
+      myImg = file;
+      return;
+    }
+  }
+  if (!myImg) {
+    return "default.jpg";
+  } else {
+    return myImg;
+  }
+}
 
 async function getGameId(reqId) {
   const temp = reqId.split("_");
@@ -9,11 +31,12 @@ async function getGameId(reqId) {
   const userId = temp[1];
   try {
     const gamesCount = await gameModel.getAllByAccount(account);
-    const randId = Math.floor(Math.random() * gamesCount) + 1;
-    console.log("count => ", gamesCount);
-    console.log("rand => ", rand);
-    const addInfo = await gameModel.getOneByGameId(randId);
-    const imgUrl = `http://${env.host}:${env.apiPort}/images/${addInfo.gameId}.png`;
+    const randId = Math.floor(Math.random() * gamesCount.length) + 1;
+    console.log("count => ", gamesCount.length);
+    console.log("rand => ", randId);
+    const addInfo = gamesCount[randId - 1];
+    const imgName = imagesScanner(addInfo.gameId);
+    const imgUrl = `http://${env.host}:${env.apiPort}/images/${imgName}`;
     return { userId: reqId, gameId: addInfo.gameId, account, imgUrl };
   } catch (error) {
     return error;

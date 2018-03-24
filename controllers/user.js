@@ -6,9 +6,9 @@ async function getUserId({ account }) {
   const userId = account + "_" + id;
   try {
     const results = await userModel.create(userId, account);
-    return { success: true, error: null, response: { userId: results } };
+    return { success: true, message: 'ok', response: { userId: results } };
   } catch (error) {
-    return { success: false, error: error, response: null };
+    return { success: false, message: error, response: null };
   }
 }
 

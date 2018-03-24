@@ -10,9 +10,9 @@ async function insertAddInfo({ userId }) {
       addInfo.account,
       "GET"
     );
-    return { success: true, error: null, response: addInfo };
+    return { success: true, message: 'ok', response: addInfo };
   } catch (error) {
-    return { success: false, error: error, response: null };
+    return { success: false, message: error, response: null };
   }
 }
 
@@ -27,9 +27,9 @@ async function updateAddInfo({ userId, gameId }, action) {
       account,
       action
     );
-    return { success: true, error: null, response: results };
+    return { success: true, message: 'ok', response: results };
   } catch (error) {
-    return { success: false, error: error, response: null };
+    return { success: false, message: error, response: null };
   }
 }
 
@@ -41,9 +41,9 @@ async function updateAddInfo({ userId, gameId }, action) {
 //       userId,
 //       gameId
 //     );
-//     return { success: true, error: null, response: results };
+//     return { success: true, message: 'ok', response: results };
 //   } catch (error) {
-//     return { success: false, error: error, response: null };
+//     return { success: false, message: error, response: null };
 //   }
 // }
 

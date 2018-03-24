@@ -32,11 +32,11 @@ exports.getAllByAccount = function(account) {
     db
       .get()
       .query(
-        "SELECT COUNT(*) AS total FROM game_info WHERE account = ?",
+        "SELECT * FROM game_info WHERE account = ?",
         account,
         function(err, rows) {
           if (err) return reject(err);
-          resolve(rows[0].total);
+          resolve(rows);
         }
       );
   });
