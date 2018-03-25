@@ -1,14 +1,12 @@
-const moment = require("moment");
 const db = require("../config/db.js");
 
 exports.create = function(userId, gameId, account, action) {
   return new Promise((resolve, reject) => {
-    const unixTimestamp = moment().unix();
-    const values = [userId, account, gameId, action, unixTimestamp];
+    const values = [userId, account, gameId, action];
     db
       .get()
       .query(
-        "INSERT INTO add_stats (userId, account, gameId, action, timestamp) VALUES(?, ?, ?, ?, ?)",
+        "INSERT INTO add_stats (userId, account, gameId, action) VALUES(?, ?, ?, ?)",
         values,
         function(err, result) {
           if (err) return reject(err);

@@ -13,11 +13,13 @@ function imagesScanner(gameId) {
   console.log("files", files);
   for (const file of files) {
     const imageName = file.split(".");
-    if (gameId == imageName[0]) {
+    if (gameId === imageName[0]) {
       myImg = file;
-      return;
+      return myImg;
     }
   }
+  console.log("img add ", myImg);
+  
   if (!myImg) {
     return "default.jpg";
   } else {
@@ -37,7 +39,13 @@ async function getGameId(reqId) {
     const addInfo = gamesCount[randId - 1];
     const imgName = imagesScanner(addInfo.gameId);
     const imgUrl = `http://${env.host}:${env.apiPort}/images/${imgName}`;
-    return { userId: reqId, gameId: addInfo.gameId, account, imgUrl };
+    return {
+      userId: reqId,
+      gameUrl: addInfo.gameUrl,
+      gameId: addInfo.gameId,
+      account,
+      imgUrl
+    };
   } catch (error) {
     return error;
   }
